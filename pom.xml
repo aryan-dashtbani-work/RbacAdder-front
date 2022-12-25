@@ -25,7 +25,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.RbacAdder.RbacAdder</mainClass>
+                            <mainClass>com.RbacAdder.RbacAdderFront</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
