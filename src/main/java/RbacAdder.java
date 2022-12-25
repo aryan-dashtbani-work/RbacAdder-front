@@ -28,6 +28,9 @@ public class RbacAdder {
             }
         }
 
+        System.out.println("starts" + buttonStartLineNumber);
+        System.out.println("end" + buttonEndLineNumber);
+
         outerLoop:
         for (int i = 0; i < buttonStartLineNumber.size(); i++) {
             for (int j = buttonStartLineNumber.get(i); j <= buttonEndLineNumber.get(i); j++){
