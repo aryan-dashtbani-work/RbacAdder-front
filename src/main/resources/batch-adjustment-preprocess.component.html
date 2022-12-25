@@ -1,0 +1,112 @@
+<mat-card class="col-12">
+    <mat-card-header class="bg-info">
+        <div class="d-flex align-items-start mt-3">
+            <div mat-card-avatar>
+                <mat-icon>info</mat-icon>
+            </div>
+            <mat-card-title>
+                <span id="jhi-permission-heading" jhiTranslate="ocsPortalApp.batchAdjustmentRequest.home.preTitle">Batch Request</span>
+            </mat-card-title>
+        </div>
+    </mat-card-header>
+
+
+    <mat-card-content>
+        <form (ngSubmit)="storeSufficientForm()" [formGroup]="editForm">
+            <div class="form-group">
+                <label class="form-control-label d-flex" jhiTranslate="ocsPortalApp.batchAdjustmentRequest.documentId"
+                       for="field_documentId">Document Id</label>
+                <input type="text" class="form-control" name="documentId" id="field_documentId"
+                       formControlName="documentId"/>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label d-flex" jhiTranslate="ocsPortalApp.batchAdjustmentRequest.description"
+                       for="field_description">Description</label>
+                <textarea class="form-control" name="description" id="field_description"
+                          formControlName="description"></textarea>
+            </div>
+
+            <div>
+                <label class="form-control-label d-flex" jhiTranslate="ocsPortalApp.batchAdjustmentRequest.content"
+                       for="field_fileContent">Batch Request</label>
+
+                <div class="uploadfilecontainer" id="field_fileContent" (click)="fileInput.click()" jhiDragDrop
+                     (onFileDropped)="uploadFile($event)">
+                    <input hidden type="file" #fileInput (change)="uploadFile($event)" formControlName="content"
+                           accept=".csv">
+                </div>
+                <div *ngIf="files">
+                    <p *ngFor="let file of files;let i= index"><span
+                        jhiTranslate="ocsPortalApp.batchAdjustmentRequest.selectedFile"></span> : <span
+                        class="selectedFile">{{ file.name }}</span></p>
+                </div>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+
+                <button type="button" class="btn btn-secondary" (click)="clear()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.clear">clear</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="uploading || upload"
+                        class="btn btn-primary">
+                    <div class="spinner-border" role="status" *ngIf="uploading">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <fa-icon [icon]="'save'" *ngIf="!uploading"></fa-icon>&nbsp;<span *ngIf="!uploading"
+                                                                                      jhiTranslate="ocsPortalApp.batchAdjustmentRequest.preProcess">preProcess</span>
+                </button>
+            </div>
+        </form>
+        <div class="col-12">
+            <div *ngIf="preProcessResponses && preProcessResponses.length > 0">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr jhiSort>
+                            <th jhiSortBy="fileName"><span jhiTranslate="ocsPortalApp.preProcessResponse.fileName">fileName</span>
+                                <fa-icon [icon]="'sort'"></fa-icon>
+                            </th>
+                            <th jhiSortBy="recordsNumber"><span
+                                jhiTranslate="ocsPortalApp.preProcessResponse.recordsNumber">recordsNumber</span>
+                                <fa-icon [icon]="'sort'"></fa-icon>
+                            </th>
+                            <th jhiSortBy="failureRecords"><span
+                                jhiTranslate="ocsPortalApp.preProcessResponse.failureRecords">failureRecords</span>
+                                <fa-icon [icon]="'sort'"></fa-icon>
+                            </th>
+                            <th jhiSortBy="successRecordNumber"><span
+                                jhiTranslate="ocsPortalApp.preProcessResponse.successRecordNumber">successRecordNumber</span>
+                                <fa-icon [icon]="'sort'"></fa-icon>
+                            </th>
+                            <th jhiTranslate="global.menu.entities.action">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let ppr of preProcessResponses">
+                            <td>{{ppr.fileName}}</td>
+                            <td>{{ppr.recordsNumber}}</td>
+                            <td>
+                                <div *ngIf="ppr?.failureRecords !== 0"><span (click)="downloadFailureFails(ppr)" [ngbTooltip]="'ocsPortalApp.batchRequest.download'|translate" class="downlaodFails cursor-pointer text-danger">{{ppr.failureRecords}}</span></div>
+                                <div *ngIf="ppr.failureRecords === 0">{{ppr.failureRecords}}</div>
+                            </td>
+                            <td>{{ppr.successRecordNumber}}</td>
+                            <td>
+                                <div *ngIf="ppr.failureRecords === 0">
+                                    <button type="button" (click)="savePreProcess(ppr)" [disabled]="savedSuccessfull"
+                                            class="btn btn-primary mr-1">
+                                        <div class="spinner-border" role="status" *ngIf="saving">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <fa-icon [icon]="'save'" *ngIf="!saving"></fa-icon>&nbsp;<span *ngIf="!saving" jhiTranslate="entity.action.save">Save</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
