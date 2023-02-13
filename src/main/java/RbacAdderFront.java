@@ -43,6 +43,7 @@ public class RbacAdderFront {
                             if (s.get(j).contains("*jhiHasPermission=")
                                     || s.get(j).contains("(click)=\"clear()\"")
                                     || s.get(j).contains("(click)=\"cancel()\"")
+                                    || s.get(j).contains("(click)=\"clearForm()\"")
                                     || s.get(j).contains("(click)=\"closeDialog()\"")) {
                                 break outerLoop;
                             }
